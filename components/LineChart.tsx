@@ -22,7 +22,7 @@ const fetchData = (start: UnixSecond, duration: UnixSecond): Dataset => {
   const interval = 3600;
   const size = Math.floor(duration / interval);
   const data = Array.from(Array(size), (item, index) => {
-    return { x: new Date(start + index * interval * 1000).getHours(), y: random() };
+    return { x: new Date((start + index * interval) * 1000).getHours(), y: random() };
   });
 
   return {

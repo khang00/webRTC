@@ -1,8 +1,8 @@
-import '../styles/app.css'
-import 'bootstrap/dist/css/bootstrap.css'
+import "../styles/app.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return <Component {...pageProps} />;
 }
 
-export default App
+export default App;

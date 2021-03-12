@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import VideoCanvas from '../components/VideoCanvas';
-import LineChart from '../components/LineChart';
+import Card from "../components/Card";
+import LineChart from "../components/LineChart";
 
 export default class Overview extends React.Component<any, any> {
   constructor(props: any) {
@@ -12,26 +12,24 @@ export default class Overview extends React.Component<any, any> {
         user: 60,
         currentOnlineUser: 16,
         numberRooms: 6,
-        serverRequest: 64
+        serverRequest: 64,
       },
       todayInfo: {
         bandwidthMin: "4 Mbps",
         bandwidthMax: "9.5 Mbps",
         mostUseTime: "10AM",
         averageUsingTime: "3h 8m",
-        commonDevices: "Windows laptop"
+        commonDevices: "Windows laptop",
       },
       monthlyInfo: {
         totalRequest: 4238,
         totalTimeUserActive: 1005,
         timeHasMostAccess: "9:00 AM",
-        timeHasLessAccess: "00:00 PM"
-      }
-    }
+        timeHasLessAccess: "00:00 PM",
+      },
+    };
   }
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   render() {
     return (
@@ -40,16 +38,28 @@ export default class Overview extends React.Component<any, any> {
         <div className="container-fluid">
           <div className="row" style={{ paddingBottom: "1rem" }}>
             <div className="col-sm-3">
-              <VideoCanvas title="Total number of users" quantity={this.state.total.user} />
+              <Card
+                title="Total number of users"
+                quantity={this.state.total.user}
+              />
             </div>
             <div className="col-sm-3">
-              <VideoCanvas title="Number of online users" quantity={this.state.total.currentOnlineUser} />
+              <Card
+                title="Number of online users"
+                quantity={this.state.total.currentOnlineUser}
+              />
             </div>
             <div className="col-sm-3">
-              <VideoCanvas title="Number of rooms" quantity={this.state.total.numberRooms} />
+              <Card
+                title="Number of rooms"
+                quantity={this.state.total.numberRooms}
+              />
             </div>
             <div className="col-sm-3">
-              <VideoCanvas title="Total server request" quantity={this.state.total.serverRequest} />
+              <Card
+                title="Total server request"
+                quantity={this.state.total.serverRequest}
+              />
             </div>
           </div>
 
@@ -59,11 +69,26 @@ export default class Overview extends React.Component<any, any> {
               <LineChart />
             </div>
             <div className="col-sm-4">
-              <VideoCanvas title="Bandwidth Min" quantity={this.state.todayInfo.bandwidthMin} />
-              <VideoCanvas title="Bandwidth Max" quantity={this.state.todayInfo.bandwidthMax} />
-              <VideoCanvas title="Most use time" quantity={this.state.todayInfo.mostUseTime} />
-              <VideoCanvas title="Average using time" quantity={this.state.todayInfo.averageUsingTime} />
-              <VideoCanvas title="Common devices" quantity={this.state.todayInfo.commonDevices} />
+              <Card
+                title="Bandwidth Min"
+                quantity={this.state.todayInfo.bandwidthMin}
+              />
+              <Card
+                title="Bandwidth Max"
+                quantity={this.state.todayInfo.bandwidthMax}
+              />
+              <Card
+                title="Most use time"
+                quantity={this.state.todayInfo.mostUseTime}
+              />
+              <Card
+                title="Average using time"
+                quantity={this.state.todayInfo.averageUsingTime}
+              />
+              <Card
+                title="Common devices"
+                quantity={this.state.todayInfo.commonDevices}
+              />
             </div>
           </div>
 
@@ -111,20 +136,18 @@ export default class Overview extends React.Component<any, any> {
                   </div>
                 </div>
               </div>
-
-
             </div>
 
             <div className="col-sm-6" style={{ backgroundColor: "white" }}>
-              <img style={{ width: "100%" }} src="https://upload.wikimedia.org/wikipedia/commons/3/38/Worldmap-blank.svg" alt="" />
+              <img
+                style={{ width: "100%" }}
+                src="https://upload.wikimedia.org/wikipedia/commons/3/38/Worldmap-blank.svg"
+                alt=""
+              />
             </div>
-
           </div>
         </div>
       </div>
     );
   }
-
-
-
 }

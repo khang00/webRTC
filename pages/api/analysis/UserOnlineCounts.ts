@@ -1,7 +1,7 @@
 const random = () => Math.floor(Math.random() * 100);
 
 const getUserOnlineByInterval = (start: number, duration: number) => {
-  const interval = 1800;
+  const interval = 3600;
   const size = Math.floor(duration / interval);
   const data = Array.from(Array(size), (item, index) => 0).map(
     (item, index) => {
@@ -10,7 +10,7 @@ const getUserOnlineByInterval = (start: number, duration: number) => {
       const thisDate = new Date(start * 1000 + index * 1000 * interval);
 
       return {
-        x: `${thisDate.getHours()}h:${thisDate.getMinutes()}m`,
+        x: `${thisDate.getHours()}:${thisDate.getMinutes()}`,
         y: random(),
       };
     }

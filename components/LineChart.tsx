@@ -3,6 +3,7 @@ import styles from "../styles/LineChart.module.css";
 
 // @ts-ignore
 import { ResponsiveLine } from "@nivo/line";
+import { fetchUserOnlineCounts } from "../utils/analysis";
 
 interface Point {
   x: number | string | Date;
@@ -14,25 +15,7 @@ interface Dataset {
   data: Array<Point>;
 }
 
-type UnixSecond = number;
-
 const random = () => Math.floor(Math.random() * 100);
-
-const fetchData = (start: UnixSecond, duration: UnixSecond): Dataset => {
-  const interval = 3600;
-  const size = Math.floor(duration / interval);
-  const data = Array.from(Array(size), (item, index) => {
-    return {
-      x: new Date((start + index * interval) * 1000).getHours(),
-      y: random(),
-    };
-  });
-
-  return {
-    id: start,
-    data: data,
-  };
-};
 
 export default class LineChart extends React.Component<any, any> {
   constructor(props: any) {
@@ -43,13 +26,15 @@ export default class LineChart extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    const now = Math.floor(Date.now() / 3600);
-    const aDay = 3600 * 24;
-    const today = fetchData(now, aDay);
-    const yesterday = fetchData(now - aDay, aDay);
-    today.id = "today";
-    yesterday.id = "yesterday";
-    this.setState({ dataset: [yesterday, today] });
+    (async () => {
+      const now = Math.floor(Date.now() / 1000);
+      const aDay = 3600 * 24;
+      const today = await fetchUserOnlineCounts(now, aDay);
+      const yesterday = await fetchUserOnlineCounts(now - aDay, aDay);
+      today.id = "today";
+      yesterday.id = "yesterday";
+      this.setState({ dataset: [yesterday, today] });
+    })()
   }
 
   render() {

@@ -1,4 +1,4 @@
-const random = () => Math.floor(Math.random() * 100);
+const random = () => Math.floor(Math.random() * 20);
 
 const getUserOnlineByInterval = (start: number, duration: number) => {
   const interval = 3600;

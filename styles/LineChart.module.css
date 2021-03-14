@@ -1,5 +1,6 @@
 .chart {
-  max-height: 50vh;
+  min-height: 50vh;
+  max-height: 60vh;
   height: 100%;
-  width: auto;
+  width: 100%;
 }

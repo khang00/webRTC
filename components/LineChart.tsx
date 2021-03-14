@@ -5,18 +5,6 @@ import styles from "../styles/LineChart.module.css";
 import { ResponsiveLine } from "@nivo/line";
 import { fetchUserOnlineCounts } from "../utils/analysis";
 
-interface Point {
-  x: number | string | Date;
-  y: number | string | Date;
-}
-
-interface Dataset {
-  id: String | number;
-  data: Array<Point>;
-}
-
-const random = () => Math.floor(Math.random() * 100);
-
 export default class LineChart extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -34,7 +22,7 @@ export default class LineChart extends React.Component<any, any> {
       today.id = "today";
       yesterday.id = "yesterday";
       this.setState({ dataset: [yesterday, today] });
-    })()
+    })();
   }
 
   render() {
@@ -49,13 +37,13 @@ export default class LineChart extends React.Component<any, any> {
           useMesh={true}
           axisBottom={{
             orient: "bottom",
-            legend: "Hours",
+            legend: "Times",
             legendOffset: 36,
             legendPosition: "middle",
           }}
           axisLeft={{
             orient: "left",
-            legend: "Counts",
+            legend: "Number of Online Users",
             legendOffset: -40,
             legendPosition: "middle",
           }}

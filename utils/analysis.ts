@@ -8,10 +8,21 @@ const getData = async (urlString: string, params: Object) => {
   return await result.json();
 };
 
+
+interface Point {
+  x: number | string | Date;
+  y: number | string | Date;
+}
+
+interface Dataset {
+  id: String | number;
+  data: Array<Point>;
+}
+
 export const fetchUserOnlineCounts = async (
   start: number,
   duration: number
-) => {
+) :Promise<Dataset> => {
   return getData(USER_ONLINE_COUNT_ENDPOINT, {
     start: start,
     duration: duration,

@@ -2,6 +2,7 @@ import React from "react";
 
 import Card from "../components/Card";
 import LineChart from "../components/LineChart";
+import Map from "../components/Map";
 
 export default class Overview extends React.Component<any, any> {
   constructor(props: any) {
@@ -29,15 +30,21 @@ export default class Overview extends React.Component<any, any> {
       },
     };
   }
+
   componentDidMount() {}
 
   render() {
     return (
       <div>
-        <h3 style={{ padding: "1rem" }}>Overview</h3>
         <div className="container-fluid">
+          <div className="row">
+            <Map />
+          </div>
+
+          <h3>Overview</h3>
+
           <div className="row" style={{ paddingBottom: "1rem" }}>
-            <div className="col-sm-3">
+            <div className="col-sm-3" style={{ textAlign: "center" }}>
               <Card
                 title="Total number of users"
                 quantity={this.state.total.user}
@@ -63,7 +70,7 @@ export default class Overview extends React.Component<any, any> {
             </div>
           </div>
 
-          <div className="row no-gutters" style={{ backgroundColor: "white" }}>
+          <div className="row" style={{ backgroundColor: "white" }}>
             <div className="col-sm-8">
               <h5 style={{ padding: "1rem" }}>Today's info</h5>
               <LineChart />
@@ -136,14 +143,6 @@ export default class Overview extends React.Component<any, any> {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="col-sm-6" style={{ backgroundColor: "white" }}>
-              <img
-                style={{ width: "100%" }}
-                src="https://upload.wikimedia.org/wikipedia/commons/3/38/Worldmap-blank.svg"
-                alt=""
-              />
             </div>
           </div>
         </div>

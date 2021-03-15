@@ -9,9 +9,9 @@ export interface Dataset {
 }
 
 export interface SummaryData {
-  device: string,
+  device: string;
   bandWidth: {
-    min: number,
-    max: number
-  }
+    min: number;
+    max: number;
+  };
 }

@@ -1,18 +1,18 @@
-export const getToday = () :number => {
-  const today = new Date()
-  today.setHours(0)
-  today.setMinutes(0)
-  today.setSeconds(0)
+export const getToday = (): number => {
+  const today = new Date();
+  today.setHours(0);
+  today.setMinutes(0);
+  today.setSeconds(0);
 
-  return toSecond(today)
-}
+  return toSecond(today);
+};
 
-export const toSecond = (date :Date) :number => {
-  return Math.floor(date.getTime() / 1000)
-}
+export const toSecond = (date: Date): number => {
+  return Math.floor(date.getTime() / 1000);
+};
 
-export const getNow = () :number => {
+export const getNow = (): number => {
   return Math.floor(Date.now() / 1000);
-}
+};
 
-export const A_DAY = 3600 * 24
+export const A_DAY = 3600 * 24;

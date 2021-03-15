@@ -4,12 +4,11 @@ import Card from "../components/Card";
 import LineChart from "../components/LineChart";
 import Map from "../components/Map";
 import {
-  Dataset,
   fetchSummaryToday,
   fetchUserOnlineCounts,
   fetchUserOnlineCountsToday,
-  SummaryData,
 } from "../utils/analysis";
+import { Dataset, SummaryData } from "../utils/data";
 import Summary from "../components/Summary";
 import { A_DAY, getToday } from "../utils/time";
 

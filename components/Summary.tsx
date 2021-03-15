@@ -1,6 +1,6 @@
 import Card from "./Card";
 import React from "react";
-import { Point } from "../utils/analysis";
+import { Point } from "../utils/data";
 
 const Summary = (props) => {
   const {dataset, bandWidth, device} = props

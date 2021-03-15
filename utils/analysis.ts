@@ -1,4 +1,5 @@
 import { A_DAY, getToday } from "./time";
+import { Dataset, SummaryData } from "./data";
 
 const USER_ONLINE_COUNT_ENDPOINT =
   "http://localhost:3000/api/analysis/UserOnlineCounts";
@@ -9,16 +10,6 @@ const getData = async (urlString: string, params: Object) => {
   const result = await fetch(url.toString());
   return await result.json();
 };
-
-export interface Point {
-  x: number | string | Date;
-  y: number;
-}
-
-export interface Dataset {
-  id: String | number;
-  data: Array<Point>;
-}
 
 export const fetchUserOnlineCounts = async (
   start: number,
@@ -34,13 +25,6 @@ export const fetchUserOnlineCountsToday = async () => {
   return fetchUserOnlineCounts(getToday(), A_DAY)
 }
 
-export interface SummaryData {
-  device: string,
-  bandWidth: {
-    min: number,
-    max: number
-  }
-}
 
 const SUMMARY_ENDPOINT = "http://localhost:3000/api/analysis/summary"
 

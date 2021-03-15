@@ -9,8 +9,8 @@ const Summary = (props) => {
     return a.y - b.y;
   });
 
-  const maxTime :number = sortedData[sortedData.length - 1].y;
-  const meanTime :number = sortedData[Math.floor(sortedData.length / 2)].y;
+  const maxTime :string = sortedData[sortedData.length - 1].x.toString();
+  const meanTime :string = sortedData[Math.floor(sortedData.length / 2)].x.toString();
 
   return (
     <div className="container-fluid">

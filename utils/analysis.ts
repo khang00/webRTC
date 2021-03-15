@@ -1,3 +1,5 @@
+import { A_DAY, getToday } from "./time";
+
 const USER_ONLINE_COUNT_ENDPOINT =
   "http://localhost:3000/api/analysis/UserOnlineCounts";
 
@@ -8,13 +10,12 @@ const getData = async (urlString: string, params: Object) => {
   return await result.json();
 };
 
-
-interface Point {
+export interface Point {
   x: number | string | Date;
-  y: number | string | Date;
+  y: number;
 }
 
-interface Dataset {
+export interface Dataset {
   id: String | number;
   data: Array<Point>;
 }
@@ -28,3 +29,28 @@ export const fetchUserOnlineCounts = async (
     duration: duration,
   });
 };
+
+export const fetchUserOnlineCountsToday = async () => {
+  return fetchUserOnlineCounts(getToday(), A_DAY)
+}
+
+export interface SummaryData {
+  device: string,
+  bandWidth: {
+    min: number,
+    max: number
+  }
+}
+
+const SUMMARY_ENDPOINT = "http://localhost:3000/api/analysis/summary"
+
+export const fetchSummary = async (start, duration) :Promise<SummaryData> => {
+ return getData(SUMMARY_ENDPOINT, {
+   start: start,
+   duration: duration,
+ })
+}
+
+export const fetchSummaryToday = async () :Promise<SummaryData> => {
+  return fetchSummary(getToday(), A_DAY)
+}

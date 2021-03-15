@@ -5,11 +5,11 @@ import styles from "../styles/LineChart.module.css";
 import { ResponsiveLine } from "@nivo/line";
 
 const LineChart = (props) => {
-  const {dataset} = props
+  const { dataset } = props;
   return (
     <div className={styles.chart}>
       <ResponsiveLine
-        data={dataset || []}
+        data={dataset}
         margin={{ top: 50, right: 100, bottom: 50, left: 50 }}
         xScale={{ type: "point" }}
         yScale={{ type: "linear" }}
@@ -51,7 +51,7 @@ const LineChart = (props) => {
         ]}
       />
     </div>
-  )
-}
+  );
+};
 
-export default LineChart
+export default LineChart;

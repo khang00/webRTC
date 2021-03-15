@@ -5,14 +5,13 @@ import LineChart from "../components/LineChart";
 import Map from "../components/Map";
 import {
   Dataset,
-  fetchSummary,
   fetchSummaryToday,
   fetchUserOnlineCounts,
   fetchUserOnlineCountsToday,
-  SummaryData
+  SummaryData,
 } from "../utils/analysis";
 import Summary from "../components/Summary";
-import { A_DAY, getNow, getToday } from "../utils/time";
+import { A_DAY, getToday } from "../utils/time";
 
 export default class Overview extends React.Component<any, any> {
   constructor(props: any) {
@@ -31,8 +30,8 @@ export default class Overview extends React.Component<any, any> {
         device: "",
         bandWidth: {
           min: 0,
-          max: 0
-        }
+          max: 0,
+        },
       },
       monthlyInfo: {
         totalRequest: 4238,
@@ -44,32 +43,36 @@ export default class Overview extends React.Component<any, any> {
   }
 
   async getData() {
-    const today :Dataset = await fetchUserOnlineCountsToday();
-    const yesterday :Dataset = await fetchUserOnlineCounts(getToday() - A_DAY, A_DAY);
+    const today: Dataset = await fetchUserOnlineCountsToday();
+    const yesterday: Dataset = await fetchUserOnlineCounts(
+      getToday() - A_DAY,
+      A_DAY
+    );
     today.id = "today";
     yesterday.id = "yesterday";
     this.setState({ dataset: [yesterday, today] });
   }
 
   async getSummary() {
-    const summary :SummaryData = await fetchSummaryToday();
-    this.setState({summary : summary})
+    const summary: SummaryData = await fetchSummaryToday();
+    this.setState({ summary: summary });
   }
 
   componentDidMount() {
     (async () => {
-      await this.getData()
-      // await this.getSummary()
-      this.setState({loading: false})
-    })()
+      await this.getData();
+      await this.getSummary();
+      this.setState({ loading: false });
+    })();
+  }
 
-  }
   loading() {
-    return <div></div>
+    return <div></div>;
   }
+
   render() {
     if (this.state.loading === true) {
-      return this.loading()
+      return this.loading();
     } else {
       return (
         <div>
@@ -114,9 +117,11 @@ export default class Overview extends React.Component<any, any> {
               </div>
 
               <div className="col-sm-4">
-                {/*<Summary bandWidth={this.state.summary.bandWidth}*/}
-                {/*         device={this.state.summary.device}*/}
-                {/*         dataset={this.state.dataset[1]}/>*/}
+                <Summary
+                  bandWidth={this.state.summary.bandWidth}
+                  device={this.state.summary.device}
+                  dataset={this.state.dataset[1]}
+                />
               </div>
             </div>
 
@@ -170,6 +175,5 @@ export default class Overview extends React.Component<any, any> {
         </div>
       );
     }
-
   }
 }

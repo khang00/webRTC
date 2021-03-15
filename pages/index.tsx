@@ -3,11 +3,13 @@ import React from "react";
 import Card from "../components/Card";
 import LineChart from "../components/LineChart";
 import Map from "../components/Map";
+import { fetchUserOnlineCounts } from "../utils/analysis";
 
 export default class Overview extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
+      dataset: [],
       currentDate: Date().toLocaleString(),
       total: {
         user: 60,
@@ -31,7 +33,17 @@ export default class Overview extends React.Component<any, any> {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    (async () => {
+      const now = Math.floor(Date.now() / 1000);
+      const aDay = 3600 * 24;
+      const today = await fetchUserOnlineCounts(now, aDay);
+      const yesterday = await fetchUserOnlineCounts(now - aDay, aDay);
+      today.id = "today";
+      yesterday.id = "yesterday";
+      this.setState({ dataset: [yesterday, today] });
+    })()
+  }
 
   render() {
     return (
@@ -73,8 +85,9 @@ export default class Overview extends React.Component<any, any> {
           <div className="row" style={{ backgroundColor: "white" }}>
             <div className="col-sm-8">
               <h5 style={{ padding: "1rem" }}>Today's info</h5>
-              <LineChart />
+              <LineChart dataset={this.state.dataset} />
             </div>
+
             <div className="col-sm-4">
               <Card
                 title="Bandwidth Min"

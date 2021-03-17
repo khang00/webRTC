@@ -1,4 +1,4 @@
-import { A_DAY, getToday } from "./time";
+import { DAYS, getToday } from "./time";
 import { Dataset, SummaryData } from "./data";
 
 const USER_ONLINE_COUNT_ENDPOINT =
@@ -27,7 +27,7 @@ export const fetchUserOnlineCounts = async (
 };
 
 export const fetchUserOnlineCountsToday = async () => {
-  return fetchUserOnlineCounts(getToday(), A_DAY);
+  return fetchUserOnlineCounts(getToday(), DAYS);
 };
 
 export const fetchSummary = async (start, duration): Promise<SummaryData> => {
@@ -38,5 +38,5 @@ export const fetchSummary = async (start, duration): Promise<SummaryData> => {
 };
 
 export const fetchSummaryToday = async (): Promise<SummaryData> => {
-  return fetchSummary(getToday(), A_DAY);
+  return fetchSummary(getToday(), DAYS);
 };

@@ -4,13 +4,15 @@ import Card from "../components/Card";
 import LineChart from "../components/LineChart";
 import Map from "../components/Map";
 import {
+  fetchSummary,
   fetchSummaryToday,
   fetchUserOnlineCounts,
-  fetchUserOnlineCountsToday,
+  fetchUserOnlineCountsToday
 } from "../utils/analysis";
 import { Dataset, SummaryData } from "../utils/data";
 import Summary from "../components/Summary";
-import { A_DAY, getToday } from "../utils/time";
+import { DAYS, MONTHS, getToday } from "../utils/time";
+import MonthlySummary from "../components/MonthlySummary";
 
 export default class Overview extends React.Component<any, any> {
   constructor(props: any) {
@@ -25,27 +27,34 @@ export default class Overview extends React.Component<any, any> {
         numberRooms: 6,
         serverRequest: 64,
       },
-      summary: {
+      summaryMonthly: {
+        totalRequest: 0,
+        timeMostUserAccess: "",
+        timeLeastUserAccess: "",
         device: "",
         bandWidth: {
           min: 0,
           max: 0,
         },
       },
-      monthlyInfo: {
-        totalRequest: 4238,
-        totalTimeUserActive: 1005,
-        timeHasMostAccess: "9:00 AM",
-        timeHasLessAccess: "00:00 PM",
+      summary: {
+        totalRequest: 0,
+        timeMostUserAccess: "",
+        timeLeastUserAccess: "",
+        device: "",
+        bandWidth: {
+          min: 0,
+          max: 0,
+        },
       },
     };
   }
 
-  async getData() {
+  async getLast2DaysData() {
     const today: Dataset = await fetchUserOnlineCountsToday();
     const yesterday: Dataset = await fetchUserOnlineCounts(
-      getToday() - A_DAY,
-      A_DAY
+      getToday() - DAYS,
+      DAYS
     );
     today.id = "today";
     yesterday.id = "yesterday";
@@ -57,10 +66,16 @@ export default class Overview extends React.Component<any, any> {
     this.setState({ summary: summary });
   }
 
+  async getSummaryMonth() {
+    const summary: SummaryData = await fetchSummary(getToday() - MONTHS, MONTHS);
+    this.setState({ summaryMonthly: summary });
+  }
+
   componentDidMount() {
     (async () => {
-      await this.getData();
+      await this.getLast2DaysData();
       await this.getSummary();
+      await this.getSummaryMonth();
       this.setState({ loading: false });
     })();
   }
@@ -126,48 +141,8 @@ export default class Overview extends React.Component<any, any> {
 
             <div className="row">
               <div className="col-sm-6" style={{ backgroundColor: "white" }}>
-                <h5 style={{ paddingTop: "2rem" }}>Monthly info</h5>
-                <p style={{ paddingLeft: "2rem" }}>of OFFICE</p>
-                <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-sm-8">
-                      <h5>Total request of this month</h5>
-                    </div>
-                    <div className="col-sm-4">
-                      <p>{this.state.monthlyInfo.totalRequest}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-sm-8">
-                      <h5>Total time user active</h5>
-                    </div>
-                    <div className="col-sm-4">
-                      <p>{this.state.monthlyInfo.totalTimeUserActive}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-sm-8">
-                      <h5>Time has most user access</h5>
-                    </div>
-                    <div className="col-sm-4">
-                      <p>{this.state.monthlyInfo.timeHasMostAccess}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-sm-8">
-                      <h5>Time has least user access</h5>
-                    </div>
-                    <div className="col-sm-4">
-                      <p>{this.state.monthlyInfo.timeHasLessAccess}</p>
-                    </div>
-                  </div>
-                </div>
+                <h5 style={{ paddingTop: "2rem" }}>Monthly info of OFFICE</h5>
+                <MonthlySummary monthLySummary={this.state.summaryMonthly}/>
               </div>
             </div>
           </div>

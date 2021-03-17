@@ -15,4 +15,6 @@ export const getNow = (): number => {
   return Math.floor(Date.now() / 1000);
 };
 
-export const A_DAY = 3600 * 24;
+export const DAYS = 3600 * 24;
+
+export const MONTHS = DAYS * 30;

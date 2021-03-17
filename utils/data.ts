@@ -9,6 +9,9 @@ export interface Dataset {
 }
 
 export interface SummaryData {
+  totalRequest: number;
+  timeMostUserAccess: string;
+  timeLeastUserAccess: string;
   device: string;
   bandWidth: {
     min: number;

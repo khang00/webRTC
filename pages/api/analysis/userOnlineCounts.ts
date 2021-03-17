@@ -1,6 +1,6 @@
 const random = () => Math.floor(Math.random() * 20);
 
-const getUserOnlineByInterval = (start: number, duration: number) => {
+export const getUserOnlineByInterval = (start: number, duration: number) => {
   const interval = 3600;
   const size = Math.floor(duration / interval);
   const data = Array.from(Array(size), (item, index) => 0).map(

@@ -1,3 +1,4 @@
+// @ts-ignore
 const app = require("express")();
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
@@ -16,8 +17,17 @@ const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const LOGIN_USER = new Map();
-const ROOMS = new Map();
+const LOGIN_USER = new Map<String, String>();
+const getTotalUsers = async () => LOGIN_USER.size;
+
+const ROOMS = new Map<String, Array<String>>();
+const getUserEachRoom = async () =>
+  Array.from(ROOMS.keys()).map((key) => {
+    return {
+      room: key,
+      count: ROOMS.get(key).length,
+    };
+  });
 
 io.on("connection", (socket) => {
   socket.emit("connection", "");
@@ -72,7 +82,40 @@ io.on("connection", (socket) => {
   });
 });
 
+const prom = require("prom-client");
+new prom.Gauge({
+  name: "total_ws_users",
+  help: "Number of websocket users at a point in time",
+  async collect() {
+    const currentCounts = await getTotalUsers();
+    this.set(currentCounts);
+  },
+});
+
+new prom.Gauge({
+  name: "total_ws_users_each_room",
+  help: "Number of websocket users in each room at a point in time",
+  labelNames: ["room"],
+  async collect() {
+    const records = await getUserEachRoom();
+    records.map(({ room, count }) => this.set({ room: room }, count));
+  },
+});
+
+prom.collectDefaultMetrics({
+  timeout: 10000,
+  gcDurationBuckets: [0.001, 0.01, 0.1, 1, 2, 5], // These are the default buckets.
+});
+
 nextApp.prepare().then(() => {
+  app.get("/metrics", async (req, res) => {
+    res
+      .writeHead(200, {
+        "Content-Type": prom.register.contentType,
+      })
+      .end(await prom.register.metrics());
+  });
+
   app.get("*", (req, res) => {
     return nextHandler(req, res);
   });

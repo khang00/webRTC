@@ -17,10 +17,10 @@ const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const LOGIN_USER = new Map<String, String>();
-const getTotalUsers = async () => LOGIN_USER.size;
+const LOGIN_USER = {};
+const getTotalUsers = async () => Object.keys(LOGIN_USER).length;
 
-const ROOMS = new Map<String, Array<String>>();
+const ROOMS = new Map();
 const getUserEachRoom = async () =>
   Array.from(ROOMS.keys()).map((key) => {
     return {
@@ -32,7 +32,7 @@ const getUserEachRoom = async () =>
 io.on("connection", (socket) => {
   socket.emit("connection", "");
   socket.on("login", (username) => {
-    LOGIN_USER.set(username, socket.id);
+    LOGIN_USER[username] = socket.id;
     console.log(`${username} login`);
   });
 
@@ -65,18 +65,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on("signal", (data) => {
-    io.to(LOGIN_USER.get(data.to)).emit("signal", data);
+    io.to(LOGIN_USER[data.to]).emit("signal", data);
   });
 
   socket.on("initiate", (data) => {
-    io.to(LOGIN_USER.get(data.to)).emit("initiate", data);
+    io.to(LOGIN_USER[data.to]).emit("initiate", data);
   });
 
   socket.on("disconnecting", (reason) => {
     console.log(reason);
-    LOGIN_USER.forEach((username, socketId) => {
-      if (socketId === socket.id) {
-        LOGIN_USER.delete(username);
+    Object.keys(LOGIN_USER).forEach((username) => {
+      if (LOGIN_USER[username] === socket.id) {
+        delete LOGIN_USER[username];
       }
     });
   });

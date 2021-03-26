@@ -1,5 +1,6 @@
 // @ts-ignore
 const Client = require("socket.io-client");
+const initApp = require("../server")
 
 describe("test socket connection", () => {
   let clientSocket;
@@ -7,6 +8,7 @@ describe("test socket connection", () => {
   beforeAll((done) => {
     clientSocket = new Client(`http://localhost:3000/ws`);
     clientSocket.on("connect", done);
+    initApp()
   });
 
   afterAll(() => {

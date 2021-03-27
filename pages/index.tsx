@@ -7,7 +7,7 @@ import {
   fetchSummary,
   fetchSummaryToday,
   fetchUserOnlineCounts,
-  fetchUserOnlineCountsToday,
+  fetchUserOnlineCountsToday
 } from "../utils/analysis";
 import { Dataset, SummaryData } from "../utils/data";
 import Summary from "../components/Summary";
@@ -67,10 +67,7 @@ export default class Overview extends React.Component<any, any> {
   }
 
   async getSummaryMonth() {
-    const summary: SummaryData = await fetchSummary(
-      getToday() - MONTHS,
-      MONTHS
-    );
+    const summary: SummaryData = await fetchSummary(getToday() - MONTHS, MONTHS);
     this.setState({ summaryMonthly: summary });
   }
 
@@ -145,7 +142,7 @@ export default class Overview extends React.Component<any, any> {
             <div className="row">
               <div className="col-sm-6" style={{ backgroundColor: "white" }}>
                 <h5 style={{ paddingTop: "2rem" }}>Monthly info of OFFICE</h5>
-                <MonthlySummary monthLySummary={this.state.summaryMonthly} />
+                <MonthlySummary monthLySummary={this.state.summaryMonthly}/>
               </div>
             </div>
           </div>

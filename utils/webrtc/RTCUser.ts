@@ -127,7 +127,7 @@ class Connection {
   };
 
   static streamHandler(connection: Connection, video: HTMLVideoElement) {
-    connection.peer.on("stream", stream => {
+    connection.peer.on(SignalingEvents.Stream, stream => {
       video.srcObject = stream;
       video.play().catch(err => console.log(err));
     });

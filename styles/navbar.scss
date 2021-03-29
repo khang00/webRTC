@@ -1,0 +1,15 @@
+.bm-menu-wrap {
+    width: 17% !important;
+}
+
+.navbar-item {
+    a {
+        color: white;
+    }
+}
+
+@media screen and (max-width: 785px) {
+    .bm-menu-wrap {
+        width: unset !important;
+    }
+}

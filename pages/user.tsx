@@ -1,8 +1,8 @@
 import React from "react";
-// import "../components/Room.scss";
+// import '../components/User.scss';
 import { MDBBtn, MDBDataTable } from "mdbreact";
 
-export default class Room extends React.Component<any, any> {
+export default class User extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -10,51 +10,50 @@ export default class Room extends React.Component<any, any> {
       openFilter: false,
       roomDetails: "",
       filterData: {
-        roomDetails: "",
-        adminName: "",
-        dateFrom: "",
-        dateTo: "",
-        serverStatus: "",
+        userDetails: "",
+        dateLogin: "",
+        dateLogout: "",
+        numberOfRequest: "",
       },
     };
   }
   componentDidMount() {
-    //get room data from Backend
+    //get user data from Backend
     let dataFromBackend = [
       {
-        roomDetails: "Office room 1",
-        adminName: "Bao Tran",
-        date: "5/26/2019",
-        serverStatus: "High",
+        userDetails: "Bao Tran",
+        dateLogin: "5/26/2019",
+        dateLogout: "5/26/2019",
+        numberOfRequest: "High",
       },
       {
-        roomDetails: "Office room 2",
-        adminName: "Khang Dang 1",
-        date: "5/24/2019",
-        serverStatus: "Low",
+        userDetails: "Minh Vu",
+        dateLogin: "3/10/2020",
+        dateLogout: "3/11/2020",
+        numberOfRequest: "Normal",
       },
       {
-        roomDetails: "Office room 3",
-        adminName: "Minh Vu",
-        date: "7/15/2018",
-        serverStatus: "Normal",
+        userDetails: "Minh Truc",
+        dateLogin: "5/19/2020",
+        dateLogout: "5/20/2020",
+        numberOfRequest: "Low",
       },
       {
-        roomDetails: "Office room 4",
-        adminName: "Minh Truc",
-        date: "5/18/2020",
-        serverStatus: "High",
+        userDetails: "Khang Dang",
+        dateLogin: "5/19/2021",
+        dateLogout: "5/20/2021",
+        numberOfRequest: "Low",
       },
     ];
     dataFromBackend.forEach((room: any) => {
-      if (room.serverStatus == "High") {
-        room.serverStatus = <MDBBtn color="danger">High</MDBBtn>;
+      if (room.numberOfRequest == "High") {
+        room.numberOfRequest = <MDBBtn color="danger">High</MDBBtn>;
       }
-      if (room.serverStatus == "Normal") {
-        room.serverStatus = <MDBBtn color="success">Normal</MDBBtn>;
+      if (room.numberOfRequest == "Normal") {
+        room.numberOfRequest = <MDBBtn color="success">Normal</MDBBtn>;
       }
-      if (room.serverStatus == "Low") {
-        room.serverStatus = <MDBBtn color="warning">Low</MDBBtn>;
+      if (room.numberOfRequest == "Low") {
+        room.numberOfRequest = <MDBBtn color="warning">Low</MDBBtn>;
       }
     });
     console.log(dataFromBackend);
@@ -65,7 +64,7 @@ export default class Room extends React.Component<any, any> {
   render() {
     return (
       <div className="room-layout">
-        <h3>Room</h3>
+        <h3>User</h3>
 
         <select
           className="form-select mode-selection"
@@ -84,33 +83,22 @@ export default class Room extends React.Component<any, any> {
     return (
       <div className="container-fluid table-filter">
         <div className="row">
+          <div className="col-sm-2"></div>
+          <div className="col-sm-2">Date login</div>
+          <div className="col-sm-2">Date logout</div>
+        </div>
+        <div className="row">
           <div className="col-sm-2">
             <input
               type="text"
               className="form-control"
-              placeholder="Room details"
+              placeholder="User details"
               value={this.state.filterData.roomDetails}
               onChange={(event: any) => {
                 this.setState((prevState: any) => ({
                   filterData: {
                     ...prevState.filterData,
-                    roomDetails: event.target.value,
-                  },
-                }));
-              }}
-            />
-          </div>
-          <div className="col-sm-2">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Admin's name"
-              value={this.state.filterData.adminName}
-              onChange={(event: any) => {
-                this.setState((prevState: any) => ({
-                  filterData: {
-                    ...prevState.filterData,
-                    adminName: event.target.value,
+                    userDetails: event.target.value,
                   },
                 }));
               }}
@@ -120,53 +108,48 @@ export default class Room extends React.Component<any, any> {
             <input
               type="date"
               className="form-control"
-              placeholder="Date"
+              placeholder="Date login"
               value={this.state.filterData.dateFrom}
               onChange={(event: any) => {
                 this.setState((prevState: any) => ({
                   filterData: {
                     ...prevState.filterData,
-                    dateFrom: event.target.value,
+                    dateLogin: event.target.value,
                   },
                 }));
               }}
             />
-            <br />
-            {this.state.filterData.dateFrom ? (
-              <div>
-                <p>To</p>
-                <input
-                  type="date"
-                  className="form-control"
-                  placeholder="Date"
-                  min={this.state.filterData.dateFrom}
-                  value={this.state.filterData.dateTo}
-                  onChange={(event: any) => {
-                    this.setState((prevState: any) => ({
-                      filterData: {
-                        ...prevState.filterData,
-                        dateTo: event.target.value,
-                      },
-                    }));
-                  }}
-                />
-              </div>
-            ) : null}
           </div>
           <div className="col-sm-2">
-            <select
-              className="custom-select"
-              value={this.state.filterData.serverStatus}
+            <input
+              type="date"
+              className="form-control"
+              placeholder="Date logout"
+              value={this.state.filterData.dateFrom}
               onChange={(event: any) => {
                 this.setState((prevState: any) => ({
                   filterData: {
                     ...prevState.filterData,
-                    serverStatus: event.target.value,
+                    dateLogout: event.target.value,
+                  },
+                }));
+              }}
+            />
+          </div>
+          <div className="col-sm-2">
+            <select
+              className="custom-select"
+              value={this.state.filterData.numberOfRequest}
+              onChange={(event: any) => {
+                this.setState((prevState: any) => ({
+                  filterData: {
+                    ...prevState.filterData,
+                    numberOfRequest: event.target.value,
                   },
                 }));
               }}
             >
-              <option selected>Server status</option>
+              <option selected>Number of request</option>
               <option value="low">Low</option>
               <option value="normal">Normal</option>
               <option value="high">High</option>
@@ -189,26 +172,26 @@ export default class Room extends React.Component<any, any> {
     const data = {
       columns: [
         {
-          label: "Room details",
-          field: "roomDetails",
+          label: "User details",
+          field: "userDetails",
           sort: "asc",
           width: 300,
         },
         {
-          label: "Admin's name",
-          field: "adminName",
+          label: "Date Login",
+          field: "dateLogin",
           sort: "asc",
           width: 200,
         },
         {
-          label: "Date",
-          field: "date",
+          label: "Date Logout",
+          field: "dateLogout",
           sort: "asc",
           width: 200,
         },
         {
-          label: "Server status",
-          field: "serverStatus",
+          label: "Number of requests",
+          field: "numberOfRequest",
           sort: "asc",
           width: 200,
         },
@@ -217,7 +200,7 @@ export default class Room extends React.Component<any, any> {
     };
     return (
       <div style={{ backgroundColor: "white" }}>
-        {/* <h3 className="room-title">All Room</h3> */}
+        {/* <h3 className="room-title">All Users</h3> */}
         <p
           className="filter-icon"
           onClick={(event: any) => {

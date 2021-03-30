@@ -21,7 +21,12 @@ console.log(a);
 type TagID = "ID";
 const tagId: TagID = "ID";
 type ID = Nominal<TagID, string>;
-const toId = (textId: string): ID => [tagId, textId];
+const toId = (textId: string): ID => {
+  return {
+    tag: tagId,
+    value: textId,
+  };
+};
 
 export interface Persistence<T extends { id: ID }> {
   save: (elem: T) => T;

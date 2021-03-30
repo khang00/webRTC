@@ -92,14 +92,10 @@ export default class Overview extends React.Component<any, any> {
       return this.loading();
     } else {
       return (
-        <div>
+        <div className="home-layout">
           <div className="container-fluid">
-            <div className="row">
-              <Map />
-            </div>
-
+            <div className="row">{/* <Map /> */}</div>
             <h3>Overview</h3>
-
             <div className="row" style={{ paddingBottom: "1rem" }}>
               <div className="col-sm-3" style={{ textAlign: "center" }}>
                 <Card
@@ -142,10 +138,13 @@ export default class Overview extends React.Component<any, any> {
               </div>
             </div>
 
-            <div className="row">
+            <div className="row" style={{ padding: "2rem" }}>
               <div className="col-sm-6" style={{ backgroundColor: "white" }}>
-                <h5 style={{ paddingTop: "2rem" }}>Monthly info of OFFICE</h5>
+                <h5>Monthly info of OFFICE</h5>
                 <MonthlySummary monthLySummary={this.state.summaryMonthly} />
+              </div>
+              <div className="col-sm-6">
+                <Map />
               </div>
             </div>
           </div>

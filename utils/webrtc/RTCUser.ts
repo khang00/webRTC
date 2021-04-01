@@ -37,29 +37,31 @@ class RTCUser {
   wsServerAddress: string;
   io: Socket;
   connections: Connection[];
-  streamHolder: HTMLVideoElement;
+  onStream: (stream: MediaStream) => void;
 
-  constructor(username: string, address: string, streamHolder :HTMLVideoElement, onCalled = undefined) {
+  constructor(username: string, address: string, onStream: (stream: MediaStream) => void, onCalled = undefined) {
     this.username = toUsername(username);
     this.wsServerAddress = address;
     this.connections = [];
-    this.streamHolder = streamHolder;
+    this.onStream = onStream;
     if (onCalled === undefined) {
-      this.startSignalingConnection(Connection.defaultConnectHandler(this.io, this.streamHolder))
+      this.startSignalingConnection(Connection.defaultConnectHandler(this.io, this.onStream));
     } else {
-      this.startSignalingConnection(onCalled)
+      this.startSignalingConnection(onCalled);
     }
   }
 
-  startSignalingConnection(onCalled :(data :Data) => void) {
-    this.io = io(this.wsServerAddress);
+  startSignalingConnection(onCalled: (data: Data) => void) {
+    this.io = io(this.wsServerAddress, {
+      path: "/ws"
+    });
     this.io.on("connect_error", (error) => console.log(error));
     this.io.on(SignalingEvents.Initiate, onCalled);
     this.io.on(SignalingEvents.Connected, () => this.io.emit(SignalingEvents.Login, this.username));
   }
 
   connectToUser(username: string) {
-    const connection = Connection.connect(this.io, this.streamHolder)(this.username, toUsername(username));
+    const connection = Connection.connect(this.io, this.onStream)(this.username, toUsername(username));
     this.connections.push(connection);
   }
 
@@ -101,7 +103,7 @@ class Connection {
     this.signaling = signaling;
   }
 
-  static connect = (socket: Socket, video: HTMLVideoElement) => (caller: Username, callee: Username): Connection => {
+  static connect = (socket: Socket, onStream: (stream: MediaStream) => void) => (caller: Username, callee: Username): Connection => {
     const connection = new Connection(socket);
     connection.caller = caller;
     connection.callee = callee;
@@ -112,25 +114,22 @@ class Connection {
       to: callee,
       content: ""
     });
-    Connection.streamHandler(connection, video)
+    Connection.streamHandler(connection, onStream);
     return connection;
   };
 
-  static defaultConnectHandler = (socket: Socket, video: HTMLVideoElement) => (data: Data): Connection => {
+  static defaultConnectHandler = (socket: Socket, onStream: (stream: MediaStream) => void) => (data: Data): Connection => {
     const connection = new Connection(socket);
     connection.caller = data.from;
     connection.callee = data.to;
     connection.peer = new Peer();
     connection.registerSignalHandler();
-    Connection.streamHandler(connection, video)
+    Connection.streamHandler(connection, onStream);
     return connection;
   };
 
-  static streamHandler(connection: Connection, video: HTMLVideoElement) {
-    connection.peer.on(SignalingEvents.Stream, stream => {
-      video.srcObject = stream;
-      video.play().catch(err => console.log(err));
-    });
+  static streamHandler(connection: Connection, onStream: (stream: MediaStream) => void) {
+    connection.peer.on(SignalingEvents.Stream, onStream);
   }
 
   registerSignalHandler() {
@@ -139,9 +138,9 @@ class Connection {
     });
   }
 
-  addStream(stream :MediaStream) {
-    this.peer.addStream(stream)
+  addStream(stream: MediaStream) {
+    this.peer.addStream(stream);
   }
 }
 
-module.exports =[ RTCUser, Connection]
+export { RTCUser, Connection };

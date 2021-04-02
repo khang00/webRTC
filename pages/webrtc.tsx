@@ -1,5 +1,7 @@
 import React from "react";
+import Form from "../components/Form";
 import { RTCUser } from "../utils/webrtc/RTCUser";
+import Stream from "../components/Stream"
 
 export default class WebRTC extends React.Component<any, any> {
   constructor(props: any) {
@@ -7,15 +9,9 @@ export default class WebRTC extends React.Component<any, any> {
     this.state = {
       user: {},
       username: "",
-      streams: []
+      streams: [],
+      isLogin: false
     };
-  }
-
-  onUsername(event) {
-    console.log(this);
-    this.setState({
-      username: event.target.value
-    });
   }
 
   onStream(stream) {
@@ -24,20 +20,23 @@ export default class WebRTC extends React.Component<any, any> {
     });
   }
 
-  onBegin(event) {
-    this.setState((state) => {
-      return {
-        user: new RTCUser(state.username,"", this.onStream)
-      };
-    });
-  }
-
   render() {
-    const isBegun = this.state.user === {};
-
-    return (<div>
-      <input type="text" value={this.state.username} onChange={this.onUsername} />
-      <button onClick={this.onBegin}>Begin</button>
-    </div>);
+    if (this.state.isLogin) {
+      return (<div>
+        <Form title="Call User" onSubmit={username => {
+          this.state.user.connectToUser(username);
+        }} />
+        <Stream streams={this.state.user.streams || []}/>
+      </div>);
+    } else {
+      return (<div>
+        <Form title="Username" onSubmit={username => {
+          this.setState({
+            isLogin: true,
+            user: new RTCUser(username, process.env.NEXT_PUBLIC_WS, this.onStream)
+          });
+        }} />
+      </div>);
+    }
   }
 }

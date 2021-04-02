@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { Peer } from "simple-peer";
+import Peer  from "simple-peer";
 
 enum SignalingEvents {
   Connected = "connection",

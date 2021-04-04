@@ -20,7 +20,13 @@ const Form = (props: FormProps) => {
   return (
     <form onSubmit={registerUser}>
       <label htmlFor="username">{props.title}</label>
-      <input id="username" type="text" autoComplete="username" required onChange={onInput} />
+      <input
+        id="username"
+        type="text"
+        autoComplete="username"
+        required
+        onChange={onInput}
+      />
       <button type="submit">Begin</button>
     </form>
   );

@@ -5,13 +5,13 @@ const ICE_SERVERS = [
   {
     urls: "turn:178.128.119.82:3478",
     username: "khang",
-    credential: "123456"
+    credential: "123456",
   },
   {
     urls: "stun:178.128.119.82:3478",
     username: "khang",
-    credential: "123456"
-  }
+    credential: "123456",
+  },
 ];
 
 enum SignalingEvents {
@@ -35,7 +35,7 @@ interface Username {
 const toUsername = (username: string) => {
   return {
     tag: USERNAME_TAG,
-    username: username
+    username: username,
   };
 };
 
@@ -69,12 +69,14 @@ class RTCUser {
 
   startSignalingConnection() {
     this.io = io(this.wsServerAddress, {
-      path: "/ws"
+      path: "/ws",
     });
     this.io.on("connect_error", (error) => console.log(error));
     if (this.onCalled === undefined) {
-      this.io.on(SignalingEvents.Initiate,
-        Connection.defaultConnectHandler(this.io, this.onStream));
+      this.io.on(
+        SignalingEvents.Initiate,
+        Connection.defaultConnectHandler(this.io, this.onStream)
+      );
     } else {
       this.io.on(SignalingEvents.Initiate, this.onCalled);
     }
@@ -95,14 +97,14 @@ class RTCUser {
     this.io.emit(SignalingEvents.RoomDetails, {
       from: this.username,
       to: roomName,
-      content: ""
+      content: "",
     });
 
     this.io.on(SignalingEvents.RoomDetails, (usernames: string[]) => {
       this.io.emit(SignalingEvents.JoinRoom, {
         from: this.username,
         to: roomName,
-        content: ""
+        content: "",
       });
       usernames.map((username) => this.connectToUser(username));
     });
@@ -112,7 +114,7 @@ class RTCUser {
     this.io.emit(SignalingEvents.CreateRoom, {
       from: this.username,
       to: roomName,
-      content: ""
+      content: "",
     });
   }
 }
@@ -138,14 +140,14 @@ class Connection {
     connection.peer = new Peer({
       initiator: true,
       config: {
-        iceServers: ICE_SERVERS
-      }
+        iceServers: ICE_SERVERS,
+      },
     });
     connection.registerSignalHandler();
     connection.signaling.emit(SignalingEvents.Initiate, {
       from: caller,
       to: callee,
-      content: ""
+      content: "",
     });
     Connection.streamHandler(connection, onStream);
     return connection;
@@ -162,8 +164,8 @@ class Connection {
     connection.callee = data.to;
     connection.peer = new Peer({
       config: {
-        iceServers: ICE_SERVERS
-      }
+        iceServers: ICE_SERVERS,
+      },
     });
     console.log(connection);
     connection.registerSignalHandler();
@@ -181,12 +183,12 @@ class Connection {
   registerSignalHandler() {
     this.peer.on(SignalingEvents.Signal, (signalData) => {
       console.log("signal sends");
-      const to = (this.owner === this.caller) ? this.callee : this.caller;
+      const to = this.owner === this.caller ? this.callee : this.caller;
       console.log(to);
       this.signaling.emit(SignalingEvents.Signal, {
         from: this.owner,
         to: to,
-        content: signalData
+        content: signalData,
       });
     });
 

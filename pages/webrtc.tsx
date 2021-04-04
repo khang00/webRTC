@@ -10,7 +10,7 @@ export default class WebRTC extends React.Component<any, any> {
       user: {},
       username: "",
       streams: [],
-      isLogin: false
+      isLogin: false,
     };
   }
 
@@ -45,7 +45,7 @@ export default class WebRTC extends React.Component<any, any> {
                   username,
                   process.env.NEXT_PUBLIC_WS,
                   this.onStream
-                )
+                ),
               });
             }}
           />

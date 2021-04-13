@@ -1,6 +1,8 @@
 import React from "react";
 // import "../components/Room.scss";
 import { MDBBtn, MDBDataTable } from "mdbreact";
+import axios from "axios";
+import { formatRoomTable } from "../utils/format";
 
 export default class Room extends React.Component<any, any> {
   constructor(props: any) {
@@ -18,48 +20,11 @@ export default class Room extends React.Component<any, any> {
       },
     };
   }
-  componentDidMount() {
-    //get room data from Backend
-    let dataFromBackend = [
-      {
-        roomDetails: "Office room 1",
-        adminName: "Bao Tran",
-        date: "5/26/2019",
-        serverStatus: "High",
-      },
-      {
-        roomDetails: "Office room 2",
-        adminName: "Khang Dang 1",
-        date: "5/24/2019",
-        serverStatus: "Low",
-      },
-      {
-        roomDetails: "Office room 3",
-        adminName: "Minh Vu",
-        date: "7/15/2018",
-        serverStatus: "Normal",
-      },
-      {
-        roomDetails: "Office room 4",
-        adminName: "Minh Truc",
-        date: "5/18/2020",
-        serverStatus: "High",
-      },
-    ];
-    dataFromBackend.forEach((room: any) => {
-      if (room.serverStatus == "High") {
-        room.serverStatus = <MDBBtn color="danger">High</MDBBtn>;
-      }
-      if (room.serverStatus == "Normal") {
-        room.serverStatus = <MDBBtn color="success">Normal</MDBBtn>;
-      }
-      if (room.serverStatus == "Low") {
-        room.serverStatus = <MDBBtn color="warning">Low</MDBBtn>;
-      }
-    });
-    console.log(dataFromBackend);
+  async componentDidMount() {
+    let roomData = await (await axios.get("http://localhost:8080/api/room"))
+      .data;
 
-    this.setState({ roomData: dataFromBackend });
+    this.setState({ roomData: formatRoomTable(roomData) });
   }
 
   render() {
@@ -84,7 +49,7 @@ export default class Room extends React.Component<any, any> {
     return (
       <div className="container-fluid table-filter">
         <div className="row">
-          <div className="col-sm-2">
+          <div className="col-sm-3">
             <input
               type="text"
               className="form-control"
@@ -100,7 +65,7 @@ export default class Room extends React.Component<any, any> {
               }}
             />
           </div>
-          <div className="col-sm-2">
+          <div className="col-sm-3">
             <input
               type="text"
               className="form-control"
@@ -116,7 +81,7 @@ export default class Room extends React.Component<any, any> {
               }}
             />
           </div>
-          <div className="col-sm-2">
+          <div className="col-sm-3">
             <input
               type="date"
               className="form-control"
@@ -153,7 +118,7 @@ export default class Room extends React.Component<any, any> {
               </div>
             ) : null}
           </div>
-          <div className="col-sm-2">
+          <div className="col-sm-3">
             <select
               className="custom-select"
               value={this.state.filterData.serverStatus}
@@ -172,11 +137,8 @@ export default class Room extends React.Component<any, any> {
               <option value="high">High</option>
             </select>
           </div>
-          <div className="col-sm-2">
-            <MDBBtn
-              color="primary"
-              onClick={(event: any) => console.log(this.state.filterData)}
-            >
+          <div className="col-sm-3">
+            <MDBBtn color="primary" onClick={this.handleFilterSubmit}>
               Go
             </MDBBtn>
           </div>
@@ -217,7 +179,6 @@ export default class Room extends React.Component<any, any> {
     };
     return (
       <div style={{ backgroundColor: "white" }}>
-        {/* <h3 className="room-title">All Room</h3> */}
         <p
           className="filter-icon"
           onClick={(event: any) => {
@@ -238,4 +199,12 @@ export default class Room extends React.Component<any, any> {
       </div>
     );
   }
+
+  handleFilterSubmit = () => {
+    axios
+      .post("http://localhost:8080/api/room", this.state.filterData)
+      .then((res) => {
+        this.setState({ roomData: formatRoomTable(res.data) });
+      });
+  };
 }

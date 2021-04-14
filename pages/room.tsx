@@ -3,6 +3,7 @@ import React from "react";
 import { MDBBtn, MDBDataTable } from "mdbreact";
 import axios from "axios";
 import { formatRoomTable } from "../utils/format";
+import ToolTip from "../components/core/ToolTip";
 
 export default class Room extends React.Component<any, any> {
   constructor(props: any) {
@@ -99,7 +100,10 @@ export default class Room extends React.Component<any, any> {
             <br />
             {this.state.filterData.dateFrom ? (
               <div>
-                <p>To</p>
+                <p style={{display:"flex"}}>
+                  To
+                  <ToolTip style={{marginLeft:"1rem"}} text="If you not set this field, it will filter only the date of the above date input" />
+                </p>
                 <input
                   type="date"
                   className="form-control"

@@ -1,6 +1,6 @@
 import React from "react";
 
-import Card from "../components/Card";
+import Card from "../components/core/Card";
 import LineChart from "../components/LineChart";
 import Map from "../components/Map";
 import {

@@ -24,10 +24,19 @@ export default function handler(req, res) {
           data.adminName
         }/ and r.room_name =~ /${data.roomDetails}/)`;
       } else if (data.dateFrom && data.dateTo) {
+        console.log("herere");
         const dateFrom = new Date(data.dateFrom).toISOString();
         const dateTo = new Date(data.dateTo).toISOString();
         query = `from(bucket: "webrtc") 
         |> range(start: ${dateFrom}, stop: ${dateTo})`;
+      }
+      else if (data.dateFrom){
+        console.log("only date from");
+        const dateFrom = new Date(data.dateFrom).toISOString();
+        const dateTo = new Date(data.dateFrom);
+        dateTo.setDate(dateTo.getDate() + 1);
+        query = `from(bucket: "webrtc") 
+        |> range(start: ${dateFrom}, stop: ${dateTo.toISOString()})`;
       }
     }
   } else {

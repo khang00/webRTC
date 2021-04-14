@@ -1,4 +1,4 @@
-import Card from "./Card";
+import Card from "./core/Card";
 import React from "react";
 import { Point } from "../utils/data";
 

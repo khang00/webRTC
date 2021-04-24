@@ -1,17 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap");
 * {
-    font-family: "Quicksand", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 body {
-    height: 100vh !important;
+  height: 100vh !important;
 }
 
 .home-layout {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .mode-selection {
-    float: right;
-    margin-top: -2rem;
+  float: right;
+  margin-top: -2rem;
 }

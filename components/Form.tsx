@@ -1,10 +1,10 @@
 interface FormProps {
-  title: string,
-  onSubmit: (username: string) => void
+  title: string;
+  onSubmit: (username: string) => void;
 }
 
 const Form = (props: FormProps) => {
-  const registerUser = event => {
+  const registerUser = (event) => {
     event.preventDefault();
     props.onSubmit(event.target.value);
   };

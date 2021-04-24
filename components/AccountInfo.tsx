@@ -64,7 +64,7 @@ const AccountInfo = (props: AccountInfoProps): JSX.Element => {
                         : setShowPassword(true)
                     }
                   >
-                      {showPassword ? "Hide password" : "Show password"}
+                    {showPassword ? "Hide password" : "Show password"}
                   </MDBBtn>
                 </MDBCardText>
               </MDBCardBody>

@@ -1,19 +1,26 @@
 .room-layout {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .room-title {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .filter-icon {
+<<<<<<< HEAD
     cursor: pointer;
+=======
+  float: right;
+  margin-top: -3rem;
+  margin-right: 1rem;
+  cursor: pointer;
+>>>>>>> 657e356... lint
 }
 
 .table-filter {
-    padding: 1rem;
+  padding: 1rem;
 }
 
-tbody+thead {
-    display: none;
+tbody + thead {
+  display: none;
 }
